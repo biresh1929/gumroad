@@ -288,7 +288,18 @@ sudo pacman -Syu mkcert
 ### Running Locally
 
 ## For Windows:
+### /etc/hosts Setup
+Make sure this is in your `/etc/hosts`:
 
+```bash
+127.0.0.1 gumroad.dev
+```
+
+Use:
+
+```bash
+sudo nano /etc/hosts
+```
 1. Start Docker (ensure it's showing **Engine Running**)
 
 2. Open Ubuntu terminal as your non-root user.
@@ -359,7 +370,7 @@ DevTools.delete_all_indices_and_reindex_all
 ```
 
 ### Push Notifications
-
+This is Not required unless you're explicitly testing iOS push notifications
 To send push notifications:
 
 ```shell
@@ -411,20 +422,3 @@ kill -9 <PID>
 
   * Go to `chrome://net-internals/#hsts`
   * Under **Delete domain security policies**, enter `gumroad.dev` and click **Delete**.
-
----
-
-## 🧭 /etc/hosts Setup
-
-Make sure this is in your `/etc/hosts`:
-
-```bash
-127.0.0.1 gumroad.dev
-```
-
-Use:
-
-```bash
-sudo nano /etc/hosts
-```
----
