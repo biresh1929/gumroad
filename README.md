@@ -293,15 +293,13 @@ sudo pacman -Syu mkcert
 
 2. Open Ubuntu terminal as your non-root user.
 
-3. Run `sudo apt install libxslt-dev libxml2-dev`
-
-4. Start services in detached mode:
+3. Start services in detached mode:
 
 ```bash
 LOCAL_DETACHED=true make local
 ```
 
-5. In a **new terminal**:
+4. In a **new terminal**:
 
 ```bash
 sudo apt install libxslt-dev libxml2-dev
