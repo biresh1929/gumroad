@@ -60,7 +60,7 @@ wsl --install
 
 ```bash
 su - your_username
-
+```
 
 ---
 
@@ -396,3 +396,4 @@ Use:
 ```bash
 sudo nano /etc/hosts
 ```
+---
