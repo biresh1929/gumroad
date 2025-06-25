@@ -135,23 +135,24 @@ brew services stop mysql@8.0
   - MySQL: 
     - https://dev.mysql.com/doc/refman/8.0/en/windows-installation.html
     - `sudo apt install libmysqlclient-dev mysql-client`
-  - Percona Toolkit: https://www.percona.com/doc/percona-toolkit/LATEST/installation.html
+  - Percona Toolkit: https://www.percona.com/doc/percona-toolkit/LATEST/installation.html(Run the Ubuntu command given)
 
 #### Image Processing Libraries
-- For Windows:
-Run the following in your Ubuntu terminal:
-
+Run this before other commands-
 ```bash
-sudo apt update && sudo apt install build-essential libxslt-dev libxml2-dev imagemagick libvips-dev ffmpeg pdftk
+sudo apt update
 ```
-
-This will install all the below libraries needed for image processing and PDF stamping
+Install build essentials-
+ ```bash
+ sudo apt install build-essential
+```
 ##### ImageMagick
 
 We use `imagemagick` for preview editing.
 
 - For MacOS: `brew install imagemagick`
 - For Linux: `sudo apt-get install imagemagick`
+- For Windows: `sudo apt install imagemagick`
 
 ##### libvips
 
@@ -159,6 +160,7 @@ For newer image formats we use `libvips` for image processing with ActiveStorage
 
 - For MacOS: `brew install libvips`
 - For Linux: `sudo apt-get install libvips-dev`
+- For Windows: `sudo apt install libvips-dev`
 
 #### FFmpeg
 
@@ -166,6 +168,7 @@ We use `ffprobe` that comes with `FFmpeg` package to fetch metadata from video f
 
 - For MacOS: `brew install ffmpeg`
 - For Linux: `sudo apt-get install ffmpeg`
+- For Windows: `sudo apt install ffmpeg`
 
 #### PDFtk
 
@@ -174,7 +177,7 @@ We use [pdftk](https://www.pdflabs.com/tools/pdftk-server/) to stamp PDF files w
 - For MacOS: Download from [here](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg)
   - **Note:** pdftk may be blocked by Apple's firewall. If this happens, go to Settings > Privacy & Security and click "Open Anyways" to allow the installation.
 - For Linux: `sudo apt-get install pdftk`
-
+- For Windows: `sudo apt install pdftk`
 ### Installation
 
 #### Bundler and gems
@@ -231,8 +234,6 @@ App can be booted without any custom credentials. But if you would like to use s
 brew install mkcert
 ```
 
-For other operating systems, see [mkcert installation instructions](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation).
-
 2. Generate certificates by running:
 
 ```shell
@@ -242,7 +243,7 @@ bin/generate_ssl_certificates
 - For Windows:
 1. Run this in the Ubuntu terminal-
 ```shell
-sudo apt install libnss3-tools
+sudo apt install libnss3-tools mkcert
 ```
 Then run -
 ```shell
@@ -254,6 +255,36 @@ mkcert -install
 bin/generate_ssl_certificates
 ```
 
+- For Linux:
+1. first install certutil.
+```bash
+sudo apt install libnss3-tools
+    -or-
+sudo yum install nss-tools
+    -or-
+sudo pacman -S nss
+    -or-
+sudo zypper install mozilla-nss-tools
+```
+Then you can install using Homebrew on Linux
+```bash
+brew install mkcert
+```
+or build from source (requires Go 1.13+)
+```bash
+git clone https://github.com/FiloSottile/mkcert && cd mkcert
+go build -ldflags "-X main.Version=$(git describe --tags)"
+```
+or use the pre-built binaries.
+```bash
+curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+chmod +x mkcert-v*-linux-amd64
+sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+```
+For Arch Linux users, mkcert is available on the official Arch Linux repository.
+```bash
+sudo pacman -Syu mkcert
+```
 ### Running Locally
 
 ## For Windows:
@@ -262,13 +293,15 @@ bin/generate_ssl_certificates
 
 2. Open Ubuntu terminal as your non-root user.
 
-3. Start services in detached mode:
+3. Run `sudo apt install libxslt-dev libxml2-dev`
+
+4. Start services in detached mode:
 
 ```bash
 LOCAL_DETACHED=true make local
 ```
 
-4. In a **new terminal**:
+5. In a **new terminal**:
 
 ```bash
 sudo apt install libxslt-dev libxml2-dev
