@@ -32,12 +32,53 @@
 
 ### Prerequisites
 
+---
+
+## For Windows: Enable Long Paths in Git
+
+Before cloning the repository, run this in **Powershell (Admin)** to avoid long file path errors:
+
+```bash
+git config --system core.longpaths true
+````
+
+## Install WSL and Ubuntu
+
+1. Open **PowerShell as Administrator** and run:
+
+```bash
+wsl --install
+```
+
+2. Reboot your system if prompted.
+
+3. After restart, set up **Ubuntu** by choosing a username (not `root`) and password.
+
+4. Once installed, always launch **Ubuntu (not PowerShell or CMD)** for all development work.
+
+5. Switch into your non-root user:
+
+```bash
+su - your_username
+
+
+---
+
+
 Before you begin, ensure you have the following installed:
 
 #### Ruby
 
 - https://www.ruby-lang.org/en/documentation/installation/
 - Install the version listed in [the .ruby-version file](./.ruby-version)
+- For Windows:
+Install the version specified in `.ruby-version` (e.g. 3.4.3). Recommended: use a version manager like `rbenv`.
+
+```bash
+sudo apt install rbenv ruby-build
+rbenv install 3.4.3
+rbenv global 3.4.3
+```
 
 #### Node.js
 
@@ -55,6 +96,14 @@ We use Docker to setup the services for development environment.
 sudo wget -qO- https://get.docker.com/ | sh
 sudo usermod -aG docker $(whoami)
 ```
+- For Windows:
+1. Download and install Docker Desktop from [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+
+2. Open Docker → Click ⚙️ (Settings) → **Resources > WSL Integration**
+
+3. Enable integration for your Ubuntu distribution.
+
+4. Ensure Docker Desktop is running and shows **"Engine running"** at the bottom left.
 
 #### MySQL & Percona Toolkit
 
@@ -79,11 +128,24 @@ brew services stop mysql@8.0
 - For Linux:
   - MySQL:
     - https://dev.mysql.com/doc/refman/8.0/en/linux-installation.html
-    - `apt install libmysqlclient-dev`
+    - `sudo apt install libmysqlclient-dev`
+  - Percona Toolkit: https://www.percona.com/doc/percona-toolkit/LATEST/installation.html
+
+- For Windows(Run in Ubuntu Terminal)
+  - MySQL: 
+    - https://dev.mysql.com/doc/refman/8.0/en/windows-installation.html
+    - `sudo apt install libmysqlclient-dev mysql-client`
   - Percona Toolkit: https://www.percona.com/doc/percona-toolkit/LATEST/installation.html
 
 #### Image Processing Libraries
+- For Windows:
+Run the following in your Ubuntu terminal:
 
+```bash
+sudo apt update && sudo apt install build-essential libxslt-dev libxml2-dev imagemagick libvips-dev ffmpeg pdftk
+```
+
+This will install all the below libraries needed for image processing and PDF stamping
 ##### ImageMagick
 
 We use `imagemagick` for preview editing.
@@ -177,8 +239,44 @@ For other operating systems, see [mkcert installation instructions](https://gith
 bin/generate_ssl_certificates
 ```
 
+- For Windows:
+1. Run this in the Ubuntu terminal-
+```shell
+sudo apt install libnss3-tools
+```
+Then run -
+```shell
+mkcert -install
+```
+
+2. Then generate certificates by running-
+```shell
+bin/generate_ssl_certificates
+```
+
 ### Running Locally
 
+## For Windows:
+
+1. Start Docker (ensure it's showing **Engine Running**)
+
+2. Open Ubuntu terminal as your non-root user.
+
+3. Start services in detached mode:
+
+```bash
+LOCAL_DETACHED=true make local
+```
+
+4. In a **new terminal**:
+
+```bash
+sudo apt install libxslt-dev libxml2-dev
+bin/rails db:prepare
+bin/dev
+```
+
+## For MAC and Linux:
 #### Start Docker services
 
 If you installed Docker Desktop (on a Mac or Windows machine), you can run the following command to start the Docker services:
@@ -256,3 +354,45 @@ bin/rake task_name
 We use ESLint for JS, and Rubocop for Ruby. Your editor should support displaying and fixing issues reported by these inline, and CI will automatically check and fix (if possible) these.
 
 If you'd like, you can run `git config --local core.hooksPath .githooks` to check for these locally when committing.
+
+## Important Tips For Windows :
+
+*  **Don't use PowerShell, CMD, or Git Bash** for development. Use **WSL Ubuntu only**.
+*  Use `Ruby 3.4.3` as specified in the `.ruby-version` file.
+*  If `bin/dev` fails due to port `:8080` being occupied (usually by anycable), kill the process:
+
+```bash
+sudo lsof -i :8080
+kill -9 <PID>
+```
+
+* 🌐 Visit the app at [https://app.gumroad.dev](https://app.gumroad.dev)
+
+---
+
+## 🛑 Dealing with HTTPS/Privacy Issues
+
+* Chrome might block access with **"Your connection is not private"**:
+
+  * Click anywhere on the page and type: `thisisunsafe`
+
+* If Chrome auto-forces `https` and breaks dev, clear HSTS:
+
+  * Go to `chrome://net-internals/#hsts`
+  * Under **Delete domain security policies**, enter `gumroad.dev` and click **Delete**.
+
+---
+
+## 🧭 /etc/hosts Setup
+
+Make sure this is in your `/etc/hosts`:
+
+```bash
+127.0.0.1 gumroad.dev
+```
+
+Use:
+
+```bash
+sudo nano /etc/hosts
+```
