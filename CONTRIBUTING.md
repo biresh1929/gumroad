@@ -3,7 +3,11 @@
 Thanks for your interest in contributing! This document will help you get started.
 
 ## Quick Start
-
+### For Windows:
+Before cloning the repository, run this in Powershell (Admin) to avoid long file path errors:
+```bash
+git config --system core.longpaths true
+```
 1. Set up the repository
 
 ```bash
