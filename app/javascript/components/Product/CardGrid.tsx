@@ -282,7 +282,7 @@ React.useEffect(() => {
                 </label>
                 {results ? (
                   <FilterCheckboxes
-                    filters={concatFoundAndNotFound(results.tags_data, searchParams.tags)}
+                    filters={concatFoundAndNotFound(allTagsData, searchParams.tags)}
                     selection={searchParams.tags ?? []}
                     setSelection={(tags) => updateParams({ tags })}
                     disabled={disableFilters ?? false}
