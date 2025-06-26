@@ -3,7 +3,6 @@
 Thanks for your interest in contributing! This document will help you get started.
 
 ## Quick Start
-### For Windows:
 
 1. Set up the repository
 
