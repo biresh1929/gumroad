@@ -215,6 +215,23 @@ export const CardGrid = ({
   const [tagsOpen, setTagsOpen] = React.useState(false);
   const [filetypesOpen, setFiletypesOpen] = React.useState(false);
 
+  const [allTagsData, setAllTagsData] = React.useState<ProductFilter[]>([]);
+
+React.useEffect(() => {
+  if (!results?.tags_data) return;
+
+  setAllTagsData((prev) => {
+    const seen = new Set(prev.map((t) => t.key));
+    const merged = [...prev];
+    for (const tag of results.tags_data) {
+      if (!seen.has(tag.key)) {
+        merged.push(tag);
+      }
+    }
+    return merged;
+  });
+}, [results?.tags_data]);
+
   return (
     <div className="with-sidebar">
       {hideFilters ? null : (
@@ -264,7 +281,7 @@ export const CardGrid = ({
                 </label>
                 {results ? (
                   <FilterCheckboxes
-                    filters={concatFoundAndNotFound(results.tags_data, searchParams.tags)}
+                    filters={concatFoundAndNotFound(allTagsData, searchParams.tags)}
                     selection={searchParams.tags ?? []}
                     setSelection={(tags) => updateParams({ tags })}
                     disabled={disableFilters ?? false}
