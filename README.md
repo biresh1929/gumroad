@@ -32,38 +32,7 @@
 
 ### Prerequisites
 
----
-
-## For Windows: Enable Long Paths in Git
-
-Before cloning the repository, run this in **Powershell (Admin)** to avoid long file path errors:
-
-```bash
-git config --system core.longpaths true
-````
-
-## Install WSL and Ubuntu
-
-1. Open **PowerShell as Administrator** and run:
-
-```bash
-wsl --install
-```
-
-2. Reboot your system if prompted.
-
-3. After restart, set up **Ubuntu** by choosing a username (not `root`) and password.
-
-4. Once installed, always launch **Ubuntu (not PowerShell or CMD)** for all development work.
-
-5. Switch into your non-root user:
-
-```bash
-su - your_username
-```
-
----
-
+> 💡 If you're on Windows, follow our [Windows setup guide](docs/development/windows.md) instead.
 
 Before you begin, ensure you have the following installed:
 
@@ -71,14 +40,6 @@ Before you begin, ensure you have the following installed:
 
 - https://www.ruby-lang.org/en/documentation/installation/
 - Install the version listed in [the .ruby-version file](./.ruby-version)
-- For Windows:
-Install the version specified in `.ruby-version` (e.g. 3.4.3). Recommended: use a version manager like `rbenv`.
-
-```bash
-sudo apt install rbenv ruby-build
-rbenv install 3.4.3
-rbenv global 3.4.3
-```
 
 #### Node.js
 
@@ -96,14 +57,6 @@ We use Docker to setup the services for development environment.
 sudo wget -qO- https://get.docker.com/ | sh
 sudo usermod -aG docker $(whoami)
 ```
-- For Windows:
-1. Download and install Docker Desktop from [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
-
-2. Open Docker → Click ⚙️ (Settings) → **Resources > WSL Integration**
-
-3. Enable integration for your Ubuntu distribution.
-
-4. Ensure Docker Desktop is running and shows **"Engine running"** at the bottom left.
 
 #### MySQL & Percona Toolkit
 
@@ -128,31 +81,17 @@ brew services stop mysql@8.0
 - For Linux:
   - MySQL:
     - https://dev.mysql.com/doc/refman/8.0/en/linux-installation.html
-    - `sudo apt install libmysqlclient-dev`
+    - `apt install libmysqlclient-dev`
   - Percona Toolkit: https://www.percona.com/doc/percona-toolkit/LATEST/installation.html
 
-- For Windows(Run in Ubuntu Terminal)
-  - MySQL: 
-    - https://dev.mysql.com/doc/refman/8.0/en/windows-installation.html
-    - `sudo apt install libmysqlclient-dev mysql-client`
-  - Percona Toolkit: https://www.percona.com/doc/percona-toolkit/LATEST/installation.html(Run the Ubuntu command given)
-
 #### Image Processing Libraries
-Run this before other commands-
-```bash
-sudo apt update
-```
-Install build essentials-
- ```bash
- sudo apt install build-essential
-```
+
 ##### ImageMagick
 
 We use `imagemagick` for preview editing.
 
 - For MacOS: `brew install imagemagick`
 - For Linux: `sudo apt-get install imagemagick`
-- For Windows: `sudo apt install imagemagick`
 
 ##### libvips
 
@@ -160,7 +99,6 @@ For newer image formats we use `libvips` for image processing with ActiveStorage
 
 - For MacOS: `brew install libvips`
 - For Linux: `sudo apt-get install libvips-dev`
-- For Windows: `sudo apt install libvips-dev`
 
 #### FFmpeg
 
@@ -168,7 +106,6 @@ We use `ffprobe` that comes with `FFmpeg` package to fetch metadata from video f
 
 - For MacOS: `brew install ffmpeg`
 - For Linux: `sudo apt-get install ffmpeg`
-- For Windows: `sudo apt install ffmpeg`
 
 #### PDFtk
 
@@ -177,7 +114,7 @@ We use [pdftk](https://www.pdflabs.com/tools/pdftk-server/) to stamp PDF files w
 - For MacOS: Download from [here](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg)
   - **Note:** pdftk may be blocked by Apple's firewall. If this happens, go to Settings > Privacy & Security and click "Open Anyways" to allow the installation.
 - For Linux: `sudo apt-get install pdftk`
-- For Windows: `sudo apt install pdftk`
+
 ### Installation
 
 #### Bundler and gems
@@ -234,91 +171,16 @@ App can be booted without any custom credentials. But if you would like to use s
 brew install mkcert
 ```
 
+For other operating systems, see [mkcert installation instructions](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation).
+
 2. Generate certificates by running:
 
 ```shell
 bin/generate_ssl_certificates
 ```
 
-- For Windows:
-1. Run this in the Ubuntu terminal-
-```shell
-sudo apt install libnss3-tools mkcert
-```
-Then run -
-```shell
-mkcert -install
-```
-
-2. Then generate certificates by running-
-```shell
-bin/generate_ssl_certificates
-```
-
-- For Linux:
-1. first install certutil.
-```bash
-sudo apt install libnss3-tools
-    -or-
-sudo yum install nss-tools
-    -or-
-sudo pacman -S nss
-    -or-
-sudo zypper install mozilla-nss-tools
-```
-Then you can install using Homebrew on Linux
-```bash
-brew install mkcert
-```
-or build from source (requires Go 1.13+)
-```bash
-git clone https://github.com/FiloSottile/mkcert && cd mkcert
-go build -ldflags "-X main.Version=$(git describe --tags)"
-```
-or use the pre-built binaries.
-```bash
-curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
-chmod +x mkcert-v*-linux-amd64
-sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
-```
-For Arch Linux users, mkcert is available on the official Arch Linux repository.
-```bash
-sudo pacman -Syu mkcert
-```
 ### Running Locally
 
-## For Windows:
-### /etc/hosts Setup
-Make sure this is in your `/etc/hosts`:
-
-```bash
-127.0.0.1 gumroad.dev
-```
-
-Use:
-
-```bash
-sudo nano /etc/hosts
-```
-1. Start Docker (ensure it's showing **Engine Running**)
-
-2. Open Ubuntu terminal as your non-root user.
-
-3. Start services in detached mode:
-
-```bash
-LOCAL_DETACHED=true make local
-```
-
-4. In a **new terminal**:
-
-```bash
-sudo apt install libxslt-dev libxml2-dev
-bin/rails db:prepare
-bin/dev
-```
-
-## For MAC and Linux:
 #### Start Docker services
 
 If you installed Docker Desktop (on a Mac or Windows machine), you can run the following command to start the Docker services:
@@ -370,7 +232,7 @@ DevTools.delete_all_indices_and_reindex_all
 ```
 
 ### Push Notifications
-This is Not required unless you're explicitly testing iOS push notifications
+
 To send push notifications:
 
 ```shell
@@ -397,28 +259,3 @@ We use ESLint for JS, and Rubocop for Ruby. Your editor should support displayin
 
 If you'd like, you can run `git config --local core.hooksPath .githooks` to check for these locally when committing.
 
-## Important Tips For Windows :
-
-*  **Don't use PowerShell, CMD, or Git Bash** for development. Use **WSL Ubuntu only**.
-*  Use `Ruby 3.4.3` as specified in the `.ruby-version` file.
-*  If `bin/dev` fails due to port `:8080` being occupied (usually by anycable), kill the process:
-
-```bash
-sudo lsof -i :8080
-kill -9 <PID>
-```
-
-* 🌐 Visit the app at [https://app.gumroad.dev](https://app.gumroad.dev)
-
----
-
-## 🛑 Dealing with HTTPS/Privacy Issues
-
-* Chrome might block access with **"Your connection is not private"**:
-
-  * Click anywhere on the page and type: `thisisunsafe`
-
-* If Chrome auto-forces `https` and breaks dev, clear HSTS:
-
-  * Go to `chrome://net-internals/#hsts`
-  * Under **Delete domain security policies**, enter `gumroad.dev` and click **Delete**.
