@@ -33,7 +33,7 @@
 
 ### Prerequisites
 
-### Enable Long Paths in Git (One-time setup)
+#### Enable Long Paths in Git (One-time setup)
 
 Run this in **PowerShell as Administrator** to avoid long file path issues:
 
@@ -63,12 +63,21 @@ git config --system core.longpaths true
 
 Install the version specified in `.ruby-version` (e.g., 3.4.3) using `rbenv`:
 
-```bash
+# Base toolchain + rbenv
 sudo apt update
-sudo apt install -y rbenv ruby-build
+sudo apt install -y \
+  rbenv ruby-build git \
+  build-essential autoconf bison libssl-dev zlib1g-dev \
+  libreadline-dev libyaml-dev libffi-dev libgmp-dev
+
+# One-time shell initialisation (also add to ~/.bashrc or ~/.zshrc)
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# Install Ruby
 rbenv install 3.4.3
 rbenv global 3.4.3
-```
+
 
 ### Node.js
 
