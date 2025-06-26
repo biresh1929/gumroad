@@ -149,7 +149,7 @@ cp .env.example .env
 1. Install:
 
 ```bash
-sudo apt install libnss3-tools
+sudo apt install mkcert libnss3-tools
 ```
 
 2. Install root CA and generate certs:
