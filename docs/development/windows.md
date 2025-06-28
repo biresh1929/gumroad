@@ -1,18 +1,4 @@
-<p align="center">
-  <picture>
-    <source srcset="https://public-files.gumroad.com/logo/gumroad-dark.svg" media="(prefers-color-scheme: dark)">
-    <source srcset="https://public-files.gumroad.com/logo/gumroad.svg" media="(prefers-color-scheme: light)">
-    <img src="https://public-files.gumroad.com/logo/gumroad.svg" height="100" alt="Gumroad logo">
-  </picture>
-</p>
-
-<p align="center">
-  <strong>Sell your stuff. See what sticks.</strong>
-</p>
-
-<p align="center">
-  <a href="https://gumroad.com">Gumroad</a> is an e-commerce platform that enables creators to sell products directly to consumers. This repository contains the source code for the Gumroad web application.
-</p>
+# Install Gumroad for development on Windows
 
 ## Table of Contents
 
@@ -63,6 +49,7 @@ git config --system core.longpaths true
 
 Install the version specified in `.ruby-version` (e.g., 3.4.3) using `rbenv`:
 
+```bash
 # Base toolchain + rbenv
 sudo apt update
 sudo apt install -y \
@@ -77,7 +64,7 @@ eval "$(rbenv init -)"
 # Install Ruby
 rbenv install 3.4.3
 rbenv global 3.4.3
-
+```
 
 ### Node.js
 
