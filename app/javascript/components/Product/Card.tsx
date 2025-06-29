@@ -8,20 +8,68 @@ import { Icon } from "$app/components/Icons";
 import { AuthorByline } from "$app/components/Product/AuthorByline";
 import { PriceTag } from "$app/components/Product/PriceTag";
 import { Thumbnail } from "$app/components/Product/Thumbnail";
+import { Button } from "$app/components/Button";
 
 export const Card = ({
   product,
   badge,
   footerAction,
+  onAddToCart,
 }: {
   product: CardProduct;
   badge?: React.ReactNode;
   footerAction?: React.ReactNode;
-}) => (
-  <article className="product-card">
+  onAddToCart?: (product: CardProduct) => void;
+}) => {
+  const [added, setAdded] = React.useState(false);
+  const showCheck = added;
+
+
+ return (
+  <article className="product-card" style={{ position: "relative" }}>
     <figure>
       <Thumbnail url={product.thumbnail_url} nativeType={product.native_type} />
     </figure>
+
+
+<Button
+  onClick={(e) => {
+    e.stopPropagation();       // ✅ Prevent click from reaching stretched-link
+    e.preventDefault();
+    onAddToCart?.(product);
+    setAdded(true);
+  }}
+  variant="ghost"
+  className="absolute bottom-2 right-2 z-10 p-2 rounded-full bg-white shadow-md hover:bg-gray-100 transition-transform duration-150 active:scale-95"
+  aria-label="Add to cart"
+>
+ {showCheck ? (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2}
+    stroke="currentColor"
+    className="w-5 h-5 text-green-600"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+  </svg>
+) : (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2}
+    stroke="currentColor"
+    className="w-5 h-5 text-white"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+  </svg>
+)}
+
+</Button>
+
+
     {product.quantity_remaining != null ? <div className="ribbon">{`${product.quantity_remaining} left`}</div> : null}
     <header>
       <a href={product.url} className="stretched-link">
@@ -53,7 +101,7 @@ export const Card = ({
     {badge}
   </article>
 );
-
+};
 export const HorizontalCard = ({ product, big }: { product: CardProduct; big?: boolean }) => (
   <article className={cx("product-card horizontal", { big })} style={{ position: "relative" }}>
     <figure>

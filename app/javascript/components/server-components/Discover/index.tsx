@@ -2,6 +2,7 @@ import range from "lodash/range";
 import * as React from "react";
 import { createCast, is } from "ts-safe-cast";
 
+import { CartProvider } from "$app/components/Cart/CartContext";
 import { getRecommendedProducts } from "$app/data/discover";
 import { SearchResults, SearchRequest } from "$app/data/search";
 import { CardProduct } from "$app/parsers/product";
@@ -91,7 +92,7 @@ const addInitialOffset = (params: SearchRequest) =>
     ? { ...params, from: recommendedProductsCount + 1 }
     : params;
 
-const Discover = (props: Props) => {
+export const Discover = (props: Props) => {
   const location = useOriginalLocation();
 
   const defaultSortOrder = props.curated_product_ids.length > 0 ? "curated" : undefined;
@@ -314,4 +315,12 @@ const Discover = (props: Props) => {
   );
 };
 
-export default register({ component: Discover, propParser: createCast() });
+export default register({
+  component: (props: Props) => (
+    <CartProvider>
+      <Discover {...props} />
+    </CartProvider>
+  ),
+  propParser: createCast()
+});
+

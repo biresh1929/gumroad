@@ -73,6 +73,15 @@ export default {
         DEFAULT: "0.25rem 0.25rem 0 currentColor",
         lg: "0.5rem 0.5rem 0 currentColor",
       },
+      animation: {
+        "fade-in": "fadeIn 0.2s ease-in-out",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: 0, transform: "scale(0.8)" },
+          "100%": { opacity: 1, transform: "scale(1)" },
+        },
+      },
     },
   },
   plugins: [scopedPreflightPlugin(".scoped-tailwind-preflight")],

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { useCart } from "$app/components/Cart/CartContext";
 import { getSearchResults, ProductFilter, SearchRequest, SearchResults } from "$app/data/search";
 import { SORT_KEYS, PROFILE_SORT_KEYS } from "$app/parsers/product";
 import { CurrencyCode, getShortCurrencySymbol } from "$app/utils/currency";
@@ -215,6 +216,12 @@ export const CardGrid = ({
   const [tagsOpen, setTagsOpen] = React.useState(false);
   const [filetypesOpen, setFiletypesOpen] = React.useState(false);
 
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (product: CardProduct) => {
+    addToCart({ id: product.permalink, name: product.name, price: product.price_cents });
+  };
+
   return (
     <div className="with-sidebar">
       {hideFilters ? null : (
@@ -345,7 +352,20 @@ export const CardGrid = ({
       ) : (
         <div>
           <div className="product-card-grid" ref={gridRef}>
-            {results?.products.map((result) => <Card key={result.permalink} product={result} />) ??
+            {results?.products.map((product) => (
+              <Card
+                key={product.permalink}
+                product={product}
+                onAddToCart={(product) =>
+                addToCart({
+                  id: product.permalink,
+                  name: product.name,
+                  price: product.price_cents,
+                })
+               }
+              />
+
+             )) ??
               Array(6)
                 .fill(0)
                 .map((_, i) => <div key={i} className="dummy" />)}
