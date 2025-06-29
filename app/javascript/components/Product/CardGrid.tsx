@@ -181,12 +181,14 @@ export const CardGrid = ({
   };
   const resetFilters = () => dispatchAction({ type: "set-params", params: defaults });
 
-  const anyFilters = Object.entries(searchParams).some(([key, value]) => {
-    if (["from", "curated_product_ids"].includes(key)) return false;
-    if (value == null || value === defaults[key]) return false;
-    if (Array.isArray(value) && value.length === 0) return false;
-    return true;
-  });
+  let anyFilters = false;
+  for (const key of Object.keys(searchParams))
+    if (
+      !["from", "curated_product_ids"].includes(key) &&
+      searchParams[key] != null &&
+      searchParams[key] !== defaults[key]
+    )
+      anyFilters = true;
 
   React.useEffect(() => {
     if (pagination !== "scroll") return;
@@ -212,23 +214,6 @@ export const CardGrid = ({
   };
   const [tagsOpen, setTagsOpen] = React.useState(false);
   const [filetypesOpen, setFiletypesOpen] = React.useState(false);
-
-const [allTagsData, setAllTagsData] = React.useState<ProductFilter[]>([]);
-
-React.useEffect(() => {
-  if (!results?.tags_data) return;
-
-  setAllTagsData((prev) => {
-    const seen = new Set(prev.map((t) => t.key));
-    const merged = [...prev];
-    for (const tag of results.tags_data) {
-      if (!seen.has(tag.key)) {
-        merged.push(tag);
-      }
-    }
-    return merged;
-  });
-}, [results?.tags_data])
 
   return (
     <div className="with-sidebar">
@@ -279,7 +264,7 @@ React.useEffect(() => {
                 </label>
                 {results ? (
                   <FilterCheckboxes
-                    filters={concatFoundAndNotFound(allTagsData, searchParams.tags)}
+                    filters={concatFoundAndNotFound(results.tags_data, searchParams.tags)}
                     selection={searchParams.tags ?? []}
                     setSelection={(tags) => updateParams({ tags })}
                     disabled={disableFilters ?? false}
