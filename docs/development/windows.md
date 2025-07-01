@@ -268,6 +268,3 @@ kill -9 <PID>
 HELPER_WIDGET_SECRET=<any random string>
 ```
 
-```
-
----
