@@ -221,17 +221,16 @@ React.useEffect(() => {
   if (!results?.tags_data) return;
 
   setAllTagsData((prev) => {
-    const seen = new Set(prev.map((t) => t.key));
-    const merged = [...prev];
+    const map = new Map(prev.map((tag) => [tag.key, tag]));
+
     for (const tag of results.tags_data) {
-      if (!seen.has(tag.key)) {
-        merged.push(tag);
-      }
+      // Always update with latest metadata
+      map.set(tag.key, tag);
     }
-    return merged;
+
+    return Array.from(map.values());
   });
 }, [results?.tags_data]);
-
   return (
     <div className="with-sidebar">
       {hideFilters ? null : (
